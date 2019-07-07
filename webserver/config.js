@@ -1,7 +1,7 @@
 'use strict';
 
 const config = {
-  MYSQL_HOST: 'localhost',
+  MYSQL_HOST: '127.0.0.1',
   MYSQL_DB: 'nn_douga',
   MYSQL_USER: 'root',
   MYSQL_PASSWORD: 'mysql',

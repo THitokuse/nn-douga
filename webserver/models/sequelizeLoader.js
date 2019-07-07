@@ -9,6 +9,7 @@ const sequelize = new Sequelize(
     host: config.MYSQL_HOST,
     dialect: 'mysql',
     pool: config.MYSQL_CONNECTIONPOOL,
+    port: 3314,
     logging: !(process.env.NODE_ENV === 'production'),
     operatorsAliases: false
   }
