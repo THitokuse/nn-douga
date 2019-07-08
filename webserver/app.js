@@ -45,18 +45,30 @@ passport.use(
       passwordField: 'password'
     },
     function(email, password, done) {
-      passwordDigestClient
-        .verify(
-          password,
-          '$2a$15$zpLyTVbAIYURo5v/W2IWy.nasRQ/IDQCLKH/iDHHe8N5xUynbT33O'
-        )
-        .then(isCorrect => {
-          if (email === 'soichiro_yoshimura@nnn.ed.jp' && isCorrect) {
-            done(null, { email, password });
-          } else {
-            done(null, false, { message: 'パスワードが違います' });
-          }
-        });
+      User.findOne({
+        where: {
+          email: email
+        }
+      }).then(user => {
+        if (!user) {
+          done(null, false, {
+            message: '登録されたメールアドレスではありません'
+          });
+        } else {
+          passwordDigestClient
+            .verify(
+              password,
+              user.passwordDigest
+            )
+            .then(isCorrect => {
+              if (isCorrect) {
+                done(null, { email, password });
+              } else {
+                done(null, false, { message: 'パスワードが違います' });
+              }
+            });
+        }
+      });
     }
   )
 );
