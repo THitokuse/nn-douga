@@ -9,6 +9,7 @@ var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config');
+var passwordDigestClient = require('./routes/passwordDigestClient');
 
 // モデルの読み込みとテーブルの作成
 var User = require('./models/user');
@@ -44,11 +45,18 @@ passport.use(
       passwordField: 'password'
     },
     function(email, password, done) {
-      if (email === 'hasegawa@hitokuse.com' && password == 'test') {
-        done(null, { email, password });
-      } else {
-        done(null, false, { message: 'パスワードが違います' });
-      }
+      passwordDigestClient
+        .verify(
+          password,
+          '$2a$15$zpLyTVbAIYURo5v/W2IWy.nasRQ/IDQCLKH/iDHHe8N5xUynbT33O'
+        )
+        .then(isCorrect => {
+          if (email === 'soichiro_yoshimura@nnn.ed.jp' && isCorrect) {
+            done(null, { email, password });
+          } else {
+            done(null, false, { message: 'パスワードが違います' });
+          }
+        });
     }
   )
 );
