@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var helmet = require('helmet');
 var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config');
@@ -74,7 +75,18 @@ passport.use(
 );
 
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  User.findOne({
+    where: {
+      email: user.email
+    }
+  }).then(storedUser => {
+    user.userId = storeUser.userId;
+    user.userName = storeUser.userName;
+    user.isEmailVerified = storeUser.isEmailVerified;
+    user.isAdmin = storeUser.isAdmin;
+    delete user.password; // パスワードプロパティはハッシュにして保存しているので削除
+    done(null, user);
+  })
 });
 
 passport.deserializeUser(function(user, done) {
@@ -83,6 +95,10 @@ passport.deserializeUser(function(user, done) {
 
 app.use(
   session({
+    store: new RedisStore({
+      host: config.REDIS_HOST,
+      port: config.REDIS_PORT
+    }),
     secret: config.SECRET,
     resave: false,
     saveUninitialized: false

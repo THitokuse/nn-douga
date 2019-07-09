@@ -12,7 +12,9 @@ const config = {
     idle: 10000
   },
   SECRET: 'steS6av@*uya',
-  BCRYPT_ROUNDS: 15
+  BCRYPT_ROUNDS: 15,
+  REDIS_HOST: '127.0.0.1',
+  REDIS_PORT: 6379
 };
 
 module.exports = config;
