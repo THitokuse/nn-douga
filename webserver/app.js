@@ -33,7 +33,7 @@ User.sync().then(() => {
 var index = require('./routes/index');
 var login = require('./routes/login');
 var logout = require('./routes/logout');
-var users = require('./routes/users');
+var signup = require('./routes/signup');
 
 var app = express();
 app.use(helmet());
@@ -80,10 +80,10 @@ passport.serializeUser(function(user, done) {
       email: user.email
     }
   }).then(storedUser => {
-    user.userId = storeUser.userId;
-    user.userName = storeUser.userName;
-    user.isEmailVerified = storeUser.isEmailVerified;
-    user.isAdmin = storeUser.isAdmin;
+    user.userId = storedUser.userId;
+    user.userName = storedUser.userName;
+    user.isEmailVerified = storedUser.isEmailVerified;
+    user.isAdmin = storedUser.isAdmin;
     delete user.password; // パスワードプロパティはハッシュにして保存しているので削除
     done(null, user);
   })
@@ -122,7 +122,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/login', login);
 app.use('/logout', logout);
-app.use('/users', users);
+app.use('/signup', signup);
 
 app.post(
   '/login',
