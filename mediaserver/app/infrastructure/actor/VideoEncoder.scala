@@ -30,7 +30,7 @@ class VideoEncoder @Inject()(
   override def receive = {
     case EncodeStartMessage(video) => {
       Logger.debug(s"${self.path}：EncodeStartMessage recieved! ${video}")
-      router..route(EncodeToH264ACC(video), self)
+      router.route(EncodeToH264ACC(video), self)
     }
   }
 }
