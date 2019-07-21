@@ -1,0 +1,28 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
+    <style>
+      video {
+        width: 640px;
+        height: 320px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <video id="videoPlayer" controls></video>
+    </div>
+    <script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
+    <script>
+      (function() {
+        const url = 'http://127.0.0.1:8000/filesystem/mpegdash/43b35a6e-1493-4bf7-ba53-7b1d7b2fe49f.mpd';
+        const player = dashjs.MediaPlayer().create();
+        player.initialize(document.querySelector("#videoPlayer"), url, true);
+      })();
+    </script>
+  </body>
+</html>
