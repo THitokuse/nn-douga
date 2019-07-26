@@ -1,4 +1,6 @@
 # Routes
 
 + nocsrf
-POST     /v1/videos                           controllers.VideosController.post
+POST    /v1/videos              controllers.VideosController.post
++ nocsrf
+GET     /v1/videos/:fileName    controllers.VideosController.get(fileName: String)
