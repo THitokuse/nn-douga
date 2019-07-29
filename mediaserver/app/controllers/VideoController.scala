@@ -68,7 +68,9 @@ class VideosController @Inject()(cc: ControllerComponents,
                     videoEncoder ! EncodeStartMessage(video)
                   }}
                   Future.successful(Ok(Json.toJson(Seq(video)))
-                    .as("application/json"))
+                    .as("application/json")
+                    .withHeaders("Access-Control-Allow-Origin" -> "*",
+                      "Access-Control-Allow-Headers" -> allowHeaders))
                 } else {
                   Future.successful(BadRequest("Api token expired."))
                 }
@@ -102,9 +104,63 @@ class VideosController @Inject()(cc: ControllerComponents,
       } else {
         Future.successful(NotFound(s"MPD file Not found. ${fileName}"))
       }
-    } else {
-      Future.successful(NotFound(s"File Not found. ${fileName}"))
+    } else { // other mp4 need api token
+      val apiTokenOpt = request.headers.get("Authorization").flatMap(v => v.split("Bearer ").lastOption)
+      apiTokenOpt match {
+        case Some(apiToken) =>
+          val decoded = Jwt.decodeRawAll(apiToken, secret, Seq(JwtAlgorithm.HS256))
+          decoded match {
+            case Success((_, jsonString, _)) =>
+              val json = Json.parse(jsonString)
+              val userId = (json \ "userId").validate[Long].get
+              val expire = (json \ "expire").validate[Long].get
+
+              if(System.currentTimeMillis() / 1000 <= expire) {
+                val filePath = FileSystems.getDefault.getPath(mpegdashStoreDirPath, fileName)
+
+                if (Files.exists(filePath)) {
+                  Future.successful(
+                    RangeResult.ofPath(filePath, request.headers.get("Range"), Some("video/mp4")).withHeaders(
+                      "Access-Control-Allow-Origin" -> "*",
+                      "Access-Control-Allow-Headers" -> allowHeaders
+                    )
+                  )
+                } else {
+                  Future.successful(NotFound(s"MP4 file Not found. ${fileName}"))
+                }
+              } else {
+                Future.successful(BadRequest("Api token expired."))
+              }
+            case _ => Future.successful(BadRequest("Need mpeg dash file name and correct token."))
+          }
+        case _ => Future.successful(BadRequest("Need correct token."))
+      }
     }
   }
 
+  def optionsPost = Action.async { implicit request: Request[AnyContent] =>
+    Future.successful(Result(
+      header = ResponseHeader(200, Map(
+        "Access-Control-Allow-Origin" -> "*",
+        "Access-Control-Allow-Headers" -> allowHeaders,
+        "Access-Control-Allow-Methods" -> "POST, OPTIONS",
+        "Access-Control-Allow-Credentials" -> "true",
+        "Access-Control-Max-Age" -> "86400"
+      )),
+      body = HttpEntity.NoEntity
+    ))
+  }
+
+  def options(fileName: String) = Action.async { implicit request: Request[AnyContent] =>
+    Future.successful(Result(
+      header = ResponseHeader(200, Map(
+        "Access-Control-Allow-Origin" -> "*",
+        "Access-Control-Allow-Headers" -> allowHeaders,
+        "Access-Control-Allow-Methods" -> "GET, OPTIONS",
+        "Access-Control-Allow-Credentials" -> "true",
+        "Access-Control-Max-Age" -> "86400"
+      )),
+      body = HttpEntity.NoEntity
+    ))
+  }
 }
