@@ -21,6 +21,19 @@
       (function() {
         const url = 'http://127.0.0.1:8000/filesystem/mpegdash/43b35a6e-1493-4bf7-ba53-7b1d7b2fe49f.mpd';
         const player = dashjs.MediaPlayer().create();
+        player.extend('RequestModifier', () => {
+          return {
+            modifyRequestHeader: xhr => {
+              xhr.setRequestHeader('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImV4cGlyZSI6MTUyMjE0NDgxNywiaWF0IjoxNTIyMDU4NDE3fQ.A-bpSb_2eMYKw82SX6JFMGS4PwKS3_W9N8ysTzoG9wU');
+              return xhr;
+            },
+            modifyRequestURL: url => {
+              return url;
+            }
+          };
+          },
+          true
+        );
         player.initialize(document.querySelector("#videoPlayer"), url, true);
       })();
     </script>
