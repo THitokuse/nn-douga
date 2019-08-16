@@ -37,6 +37,8 @@ var signup = require('./routes/signup');
 var upload = require('./routes/upload');
 var myVideos = require('./routes/my/videos');
 
+var apiV1MyVideos = require('./routes/api/v1/my/videos');
+
 var app = express();
 app.use(helmet());
 
@@ -127,6 +129,8 @@ app.use('/logout', logout);
 app.use('/signup', signup);
 app.use('/upload', upload);
 app.use('/my/videos', myVideos);
+
+app.use('/v1/my', apiV1MyVideos);
 
 app.post(
   '/login',
