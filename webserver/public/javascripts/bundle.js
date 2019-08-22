@@ -83864,7 +83864,7 @@ function (_React$Component) {
     value: function render() {
       var postUrl = this.props.mediaserverUrlRoot + 'v1/videos';
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
-        className: "dropzone",
+        className: "dropzone jumbotron text-center",
         action: postUrl,
         method: "post",
         id: "videoUploadDropzone"
@@ -87493,6 +87493,7 @@ function (_React$Component) {
 
         if (myVideo.videoStatus === 'Published' || myVideo.videoStatus === 'Encoded') {
           operationLink = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+            className: "btn btn-primary btn-sm",
             href: '/my/videos/' + myVideo.videoId
           }, "\u7DE8\u96C6\u53CA\u3073\u516C\u958B");
         }
@@ -87503,7 +87504,9 @@ function (_React$Component) {
           href: '/watch/' + myVideo.videoId
         }, myVideo.videoId)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, myVideo.title), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, myVideo.videoStatus), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, formattedCreatedAt), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, myVideo.userId), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, operationLink));
       });
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "ID"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "\u30BF\u30A4\u30C8\u30EB"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "\u30B9\u30C6\u30FC\u30BF\u30B9"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "\u6295\u7A3F\u65E5\u6642"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "\u6295\u7A3F\u8005ID"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "\u64CD\u4F5C")), myVideos));
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
+        className: "table"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "ID"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "\u30BF\u30A4\u30C8\u30EB"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "\u30B9\u30C6\u30FC\u30BF\u30B9"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "\u6295\u7A3F\u65E5\u6642"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "\u6295\u7A3F\u8005ID"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "\u64CD\u4F5C")), myVideos));
     }
   }]);
 
