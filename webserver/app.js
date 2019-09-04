@@ -40,6 +40,7 @@ var settings = require('./routes/settings');
 var myVideos = require('./routes/my/videos');
 
 var apiV1MyVideos = require('./routes/api/v1/my/videos');
+var apiV1VideosComments = require('./routes/api/v1/videos/comments');
 
 var app = express();
 app.use(helmet());
@@ -135,6 +136,7 @@ app.use('/settings', settings);
 app.use('/my/videos', myVideos);
 
 app.use('/v1/my', apiV1MyVideos);
+app.use('/v1/videos', apiV1VideosComments);
 
 app.post(
   '/login',
