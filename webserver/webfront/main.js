@@ -8,6 +8,7 @@ import Uploader from './uploader.js';
 import MyVideoTable from './myVideoTable.js';
 import VideoPlayer from './videoPlayer.js';
 import CommentPoster from './commentPoster.js';
+import CommentTable from './commentTable.js';
 
 const uploaderDivided = document.getElementById('dropbox-container');
 if (uploaderDivided) {
@@ -51,5 +52,17 @@ if (commentPosterDivided) {
       apiToken={commentPosterDivided.dataset.apiToken}
     />,
     commentPosterDivided
+  );
+}
+
+const commentTableDivided = document.getElementById('comment-table');
+if (commentTableDivided) {
+  ReactDOM.render(
+    <CommentTable
+      videoId={commentTableDivided.dataset.videoId}
+      videoPlayerId={commentTableDivided.dataset.videoPlayerId}
+      apiToken={commentTableDivided.dataset.apiToken}
+    />,
+    commentTableDivided
   );
 }
