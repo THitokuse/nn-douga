@@ -7,6 +7,20 @@ export default class CommentTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = { comments: [] };
+    this.commentListener = (comments, eventName) => {
+      if (eventName === 'commentpost') {
+        this.setState((prevState, props) => {
+          const newComments = prevState.comments.concat(comments);
+          const sortedNewComments = newComments.sort((a, b) => {
+            return a.videoPosition - b.videoPosition;
+          });
+          return {
+            comments: sortedNewComments
+          };
+        });
+      }
+    };
+    this.props.commentListenerContainer.listeners.push(this.commentListener);
   }
 
   componentDidMount() {

@@ -16,6 +16,7 @@ export default class CommentPoster extends React.Component {
     const video = document.getElementById(this.props.videoPlayerId);
     const videoId = this.props.videoId;
     const apiToken = this.props.apiToken;
+    const commentListenerContainer = this.props.commentListenerContainer;
 
     function postComment() {
       const content = input.value;
@@ -39,6 +40,10 @@ export default class CommentPoster extends React.Component {
         .then(json => {
           input.value = '';
           console.log(json);
+          commentListenerContainer.listeners.forEach(listener => {
+            json.comment.isSelfPosted = true;
+            listener([json.comment], 'commentpost');
+          });
         })
         .catch(e => {
           console.error(e);

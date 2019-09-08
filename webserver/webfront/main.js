@@ -43,6 +43,14 @@ if (videoContainerDivided) {
   );
 }
 
+/**
+ * コメントの追加が行われた際に通知するリスナーのリスト
+ * リスナー関数の第一引数は、comments[], 第二引数はイベント名とする
+ */
+const commentListenerContainer = {
+  listeners: []
+};
+
 const commentPosterDivided = document.getElementById('comment-poster');
 if (commentPosterDivided) {
   ReactDOM.render(
@@ -50,6 +58,7 @@ if (commentPosterDivided) {
       videoId={commentPosterDivided.dataset.videoId}
       videoPlayerId={commentPosterDivided.dataset.videoPlayerId}
       apiToken={commentPosterDivided.dataset.apiToken}
+      commentListenerContainer={commentListenerContainer}
     />,
     commentPosterDivided
   );
@@ -62,6 +71,7 @@ if (commentTableDivided) {
       videoId={commentTableDivided.dataset.videoId}
       videoPlayerId={commentTableDivided.dataset.videoPlayerId}
       apiToken={commentTableDivided.dataset.apiToken}
+      commentListenerContainer={commentListenerContainer}
     />,
     commentTableDivided
   );
